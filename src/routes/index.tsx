@@ -102,8 +102,8 @@ function Index() {
 }
 
 function Mockup() {
-  const [tab, setTab] = useState<(typeof tabs)[number]>(tabs[0]);
-  const [prod, setProd] = useState(products[0]);
+  const [tab, setTab] = useState<(typeof tabs)[number]>("Katalog & Kustom");
+  const [prod, setProd] = useState(products[0]!);
   const [text, setText] = useState("Better Together");
   const [card, setCard] = useState(false);
   const [paid, setPaid] = useState(false);
