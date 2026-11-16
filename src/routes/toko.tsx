@@ -18,6 +18,7 @@ export const Route = createFileRoute("/toko")({
 });
 
 const steps = ["Pilih Produk", "Kustomisasi", "Pengiriman", "Pembayaran", "Lacak Pesanan"];
+const trackSteps = ["Pembayaran lunas", "Desain dikerjakan tim grafis", "Review draft olehmu", "Produksi kayu", "Packing", "Dikirim", "Diterima — selamat! 🎁"];
 
 function Toko() {
   const [step, setStep] = useState(0);
@@ -30,6 +31,7 @@ function Toko() {
   const [addr, setAddr] = useState({ nama: "", wa: "", alamat: "" });
   const [pay, setPay] = useState("QRIS");
   const [review, setReview] = useState<"wait" | "ok" | "rev">("wait");
+  const [extra, setExtra] = useState(0);
   const ongkir = 18000;
   const total = prod.price + ongkir + (card ? 10000 : 0);
   const canNext = [true, photo && text.length > 0, !!(addr.nama && addr.wa && addr.alamat), true][step] ?? true;
@@ -135,8 +137,8 @@ function Toko() {
                 <div className="flex items-center gap-3 rounded-2xl bg-accent p-4 text-accent-foreground"><span className="text-2xl">✓</span><div><b>Pembayaran diterima!</b><div className="text-sm">Kode pesanan KSG-0143 · notifikasi dikirim ke WhatsApp</div></div></div>
                 <h3 className="mt-6 font-semibold">Status pesanan</h3>
                 <div className="mt-3 space-y-0">
-                  {["Pembayaran lunas", "Desain dikerjakan tim grafis", "Review draft olehmu", "Produksi kayu", "Packing", "Dikirim", "Diterima — selamat! 🎁"].map((s, i) => {
-                    const cur = review === "ok" ? 3 : 2;
+                  {trackSteps.map((s, i) => {
+                    const cur = Math.min((review === "ok" ? 3 : 2) + extra, trackSteps.length - 1);
                     return (
                       <div key={s} className="flex gap-3">
                         <div className="flex flex-col items-center"><span className={`size-4 rounded-full ${i < cur ? "bg-accent" : i === cur ? "bg-primary ring-4 ring-secondary" : "bg-muted"}`} />{i < 6 && <span className="h-8 w-0.5 bg-border" />}</div>
@@ -145,6 +147,18 @@ function Toko() {
                     );
                   })}
                 </div>
+                {(() => {
+                  const cur = Math.min((review === "ok" ? 3 : 2) + extra, trackSteps.length - 1);
+                  return (
+                    <div className="mt-4 space-y-2">
+                      {cur >= 5 && <div className="rounded-xl bg-muted p-3 text-sm">🚚 Resi: <b>JNE881204</b> · JNE REG · estimasi tiba 2–3 hari</div>}
+                      {cur === trackSteps.length - 1 && <div className="rounded-xl bg-accent p-3 text-sm font-semibold text-accent-foreground">✓ Paket sudah diterima — terima kasih sudah memesan!</div>}
+                      {cur < trackSteps.length - 1 && review === "ok" && (
+                        <button onClick={() => setExtra(extra + 1)} className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold text-muted-foreground">▶ Simulasi: lanjut ke “{trackSteps[cur + 1]}”</button>
+                      )}
+                    </div>
+                  );
+                })()}
                 <div className="mt-6 grid gap-4 rounded-2xl border border-border p-4 md:grid-cols-[180px_1fr]">
                   <img src={hero} alt="Draft" loading="lazy" width={1024} height={1024} className="rounded-xl" />
                   <div>
@@ -175,7 +189,7 @@ function Toko() {
                 {!canNext && <p className="text-center text-xs text-destructive">{step === 1 ? "Unggah foto dulu" : "Lengkapi data pengiriman"}</p>}
               </div>
             )}
-            {step === 4 && <button onClick={() => { setStep(0); setReview("wait"); }} className="mt-4 w-full rounded-full border border-border py-2 text-sm">Pesan lagi</button>}
+            {step === 4 && <button onClick={() => { setStep(0); setReview("wait"); setExtra(0); }} className="mt-4 w-full rounded-full border border-border py-2 text-sm">Pesan lagi</button>}
           </aside>
         </div>
       </div>
