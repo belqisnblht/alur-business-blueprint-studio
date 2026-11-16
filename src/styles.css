@@ -125,3 +125,6 @@
 
 @utility bg-wood { background-image: var(--gradient-wood); }
 @utility shadow-soft { box-shadow: var(--shadow-soft); }
+@utility input { width: 100%; border-radius: 0.75rem; border: 1px solid var(--color-input); background: var(--color-background); padding: 0.6rem 0.9rem; &:focus { outline: 2px solid var(--color-ring); } }
+@utility btn-primary { border-radius: 9999px; background: var(--color-primary); color: var(--color-primary-foreground); padding: 0.5rem 1.25rem; font-weight: 600; font-size: 0.875rem; }
+@utility btn-ghost { border-radius: 9999px; border: 1px solid var(--color-border); padding: 0.5rem 1.25rem; font-weight: 600; font-size: 0.875rem; }
