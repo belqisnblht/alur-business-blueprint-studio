@@ -34,6 +34,7 @@ const tone: Record<Status, string> = {
   Produksi: "bg-chart-4/20 text-foreground",
   Packing: "bg-chart-5/30 text-foreground",
   Dikirim: "bg-accent/20 text-accent",
+  Diterima: "bg-accent text-accent-foreground",
 };
 
 function Badge({ s }: { s: Status }) {
@@ -164,7 +165,7 @@ function Admin() {
           {menu === "Pengiriman" && (
             <Card title="Siap kirim & terkirim" sub="Masukkan resi — pelanggan otomatis mendapat notifikasi">
               <div className="space-y-3">
-                {orders.filter((o) => ["Produksi", "Packing", "Dikirim"].includes(o.status)).map((o) => (
+                {orders.filter((o) => ["Produksi", "Packing", "Dikirim", "Diterima"].includes(o.status)).map((o) => (
                   <ResiRow key={o.id} o={o} onSave={(resi) => update(o.id, { resi, status: "Dikirim" })} onPack={() => update(o.id, { status: next(o.status) })} />
                 ))}
               </div>
@@ -202,7 +203,8 @@ function Admin() {
             </dl>
             <div className="mt-6 text-sm font-semibold">Progres</div>
             <div className="mt-2 flex gap-1">{statuses.map((s, i) => <span key={s} title={s} className={`h-2 flex-1 rounded-full ${i <= statuses.indexOf(selected.status) ? "bg-primary" : "bg-muted"}`} />)}</div>
-            {selected.status !== "Dikirim" && <button onClick={() => update(selected.id, { status: next(selected.status) })} className="mt-6 w-full rounded-full bg-wood py-3 font-semibold text-primary-foreground">Pindahkan ke “{next(selected.status)}”</button>}
+            {selected.status !== "Diterima" && <button onClick={() => update(selected.id, { status: next(selected.status) })} className="mt-6 w-full rounded-full bg-wood py-3 font-semibold text-primary-foreground">Pindahkan ke “{next(selected.status)}”</button>}
+            {selected.status === "Diterima" && <p className="mt-6 rounded-xl bg-secondary p-3 text-center text-sm font-semibold text-accent">✓ Pesanan selesai — diterima pelanggan</p>}
           </div>
         </div>
       )}
@@ -223,7 +225,8 @@ function ResiRow({ o, onSave, onPack }: { o: (typeof seed)[number]; onSave: (r: 
       <b className="w-20">{o.id}</b><span className="flex-1">{o.name}{o.card && " · 💌 kartu"}</span><Badge s={o.status} />
       {o.status === "Produksi" && <button onClick={onPack} className="btn-ghost">Tandai selesai → Packing</button>}
       {o.status === "Packing" && <><input value={r} onChange={(e) => setR(e.target.value)} placeholder="No. resi" className="input w-36" /><button disabled={!r} onClick={() => onSave(r)} className="btn-primary disabled:opacity-40">Simpan</button></>}
-      {o.status === "Dikirim" && <span className="font-semibold">{o.resi}</span>}
+      {o.status === "Dikirim" && <><span className="font-semibold">{o.resi}</span><button onClick={onPack} className="btn-ghost">Tandai diterima ✓</button></>}
+      {o.status === "Diterima" && <span className="font-semibold text-accent">✓ {o.resi} · selesai</span>}
     </div>
   );
 }

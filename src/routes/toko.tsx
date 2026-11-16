@@ -135,11 +135,11 @@ function Toko() {
                 <div className="flex items-center gap-3 rounded-2xl bg-accent p-4 text-accent-foreground"><span className="text-2xl">✓</span><div><b>Pembayaran diterima!</b><div className="text-sm">Kode pesanan KSG-0143 · notifikasi dikirim ke WhatsApp</div></div></div>
                 <h3 className="mt-6 font-semibold">Status pesanan</h3>
                 <div className="mt-3 space-y-0">
-                  {["Pembayaran lunas", "Desain dikerjakan tim grafis", "Review draft olehmu", "Produksi kayu", "Packing", "Dikirim"].map((s, i) => {
+                  {["Pembayaran lunas", "Desain dikerjakan tim grafis", "Review draft olehmu", "Produksi kayu", "Packing", "Dikirim", "Diterima — selamat! 🎁"].map((s, i) => {
                     const cur = review === "ok" ? 3 : 2;
                     return (
                       <div key={s} className="flex gap-3">
-                        <div className="flex flex-col items-center"><span className={`size-4 rounded-full ${i < cur ? "bg-accent" : i === cur ? "bg-primary ring-4 ring-secondary" : "bg-muted"}`} />{i < 5 && <span className="h-8 w-0.5 bg-border" />}</div>
+                        <div className="flex flex-col items-center"><span className={`size-4 rounded-full ${i < cur ? "bg-accent" : i === cur ? "bg-primary ring-4 ring-secondary" : "bg-muted"}`} />{i < 6 && <span className="h-8 w-0.5 bg-border" />}</div>
                         <span className={`text-sm ${i === cur ? "font-bold" : i < cur ? "" : "text-muted-foreground"}`}>{s}</span>
                       </div>
                     );

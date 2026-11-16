@@ -5,7 +5,7 @@ export const products = [
 ];
 export const moments = ["Anniversary", "Ulang Tahun", "Wisuda", "Valentine", "Natal"];
 export const rupiah = (n: number) => "Rp" + n.toLocaleString("id-ID");
-export const statuses = ["Menunggu Bayar", "Lunas", "Desain", "Review", "Produksi", "Packing", "Dikirim"] as const;
+export const statuses = ["Menunggu Bayar", "Lunas", "Desain", "Review", "Produksi", "Packing", "Dikirim", "Diterima"] as const;
 export type Status = (typeof statuses)[number];
 export const orders: { id: string; name: string; product: string; total: number; status: Status; date: string; resi?: string; card: boolean }[] = [
   { id: "KSG-0142", name: "Rina & Dimas", product: "Wooden Photo Box", total: 203000, status: "Review", date: "16 Nov", card: false },
