@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import hero from "@/assets/hero-gift.jpg";
+import kayuAsset from "@/assets/kayu-story.jpg.asset.json";
+
+const hero = kayuAsset.url;
 import { products, moments, rupiah } from "@/lib/ksg-data";
 
 export const Route = createFileRoute("/toko")({
@@ -18,7 +20,15 @@ export const Route = createFileRoute("/toko")({
 });
 
 const steps = ["Pilih Produk", "Kustomisasi", "Pengiriman", "Pembayaran", "Lacak Pesanan"];
-const trackSteps = ["Pembayaran lunas", "Desain dikerjakan tim grafis", "Review draft olehmu", "Produksi kayu", "Packing", "Dikirim", "Diterima — selamat! 🎁"];
+const trackSteps = [
+  { t: "Pembayaran lunas", d: "Pembayaranmu sudah kami terima dan pesanan masuk antrean." },
+  { t: "Desain dikerjakan tim grafis", d: "Foto dan teks ukiranmu sedang disusun menjadi draft desain." },
+  { t: "Review draft olehmu", d: "Periksa draft di bawah — setujui atau minta revisi sebelum diproduksi." },
+  { t: "Produksi kayu", d: "Desain sedang diukir ke kayu dan dirakit menjadi produk jadi." },
+  { t: "Packing", d: "Produk dikemas aman dengan bubble wrap dan kardus." },
+  { t: "Dikirim", d: "Paket sudah diserahkan ke kurir dan sedang dalam perjalanan." },
+  { t: "Diterima — selamat! 🎁", d: "Paket sudah sampai. Terima kasih sudah memesan!" },
+];
 
 function Toko() {
   const [step, setStep] = useState(0);
@@ -140,9 +150,12 @@ function Toko() {
                   {trackSteps.map((s, i) => {
                     const cur = Math.min((review === "ok" ? 3 : 2) + extra, trackSteps.length - 1);
                     return (
-                      <div key={s} className="flex gap-3">
-                        <div className="flex flex-col items-center"><span className={`size-4 rounded-full ${i < cur ? "bg-accent" : i === cur ? "bg-primary ring-4 ring-secondary" : "bg-muted"}`} />{i < 6 && <span className="h-8 w-0.5 bg-border" />}</div>
-                        <span className={`text-sm ${i === cur ? "font-bold" : i < cur ? "" : "text-muted-foreground"}`}>{s}</span>
+                      <div key={s.t} className="flex gap-3">
+                        <div className="flex flex-col items-center"><span className={`mt-0.5 size-4 shrink-0 rounded-full ${i < cur ? "bg-accent" : i === cur ? "bg-primary ring-4 ring-secondary" : "bg-muted"}`} />{i < 6 && <span className="min-h-8 w-0.5 flex-1 bg-border" />}</div>
+                        <div className="pb-3">
+                          <div className={`text-sm ${i === cur ? "font-bold" : i < cur ? "" : "text-muted-foreground"}`}>{s.t}</div>
+                          <div className={`text-xs ${i <= cur ? "text-muted-foreground" : "text-muted-foreground/60"}`}>{s.d}</div>
+                        </div>
                       </div>
                     );
                   })}
@@ -154,7 +167,7 @@ function Toko() {
                       {cur >= 5 && <div className="rounded-xl bg-muted p-3 text-sm">🚚 Resi: <b>JNE881204</b> · JNE REG · estimasi tiba 2–3 hari</div>}
                       {cur === trackSteps.length - 1 && <div className="rounded-xl bg-accent p-3 text-sm font-semibold text-accent-foreground">✓ Paket sudah diterima — terima kasih sudah memesan!</div>}
                       {cur < trackSteps.length - 1 && review === "ok" && (
-                        <button onClick={() => setExtra(extra + 1)} className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold text-muted-foreground">▶ Simulasi: lanjut ke “{trackSteps[cur + 1]}”</button>
+                        <button onClick={() => setExtra(extra + 1)} className="rounded-full border border-border px-4 py-1.5 text-xs font-semibold text-muted-foreground">▶ Simulasi: lanjut ke “{trackSteps[cur + 1]?.t}”</button>
                       )}
                     </div>
                   );

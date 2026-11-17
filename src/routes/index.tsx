@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import hero from "@/assets/hero-gift.jpg";
+import kayuAsset from "@/assets/kayu-story.jpg.asset.json";
+
+const hero = kayuAsset.url;
 
 export const Route = createFileRoute("/")({
   head: () => ({
