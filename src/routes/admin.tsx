@@ -449,9 +449,16 @@ export function AdminPage() {
                             <div className="text-[11px] text-muted-foreground">{o.phone}</div>
                           </td>
                           <td className="p-3">
-                            <div className="font-semibold">{o.product}</div>
+                            <div className="font-semibold flex items-center gap-1.5">
+                              <span>{o.product}</span>
+                              {o.productionSpeedCost && o.productionSpeedCost > 0 ? (
+                                <span className="rounded bg-amber-500/20 text-amber-700 dark:text-amber-300 px-1.5 py-0.2 text-[9px] font-bold">
+                                  ⚡ Express
+                                </span>
+                              ) : null}
+                            </div>
                             <div className="text-[11px] text-primary truncate max-w-[180px]">
-                              "{o.customText}"
+                              {o.customText || o.grafirOption || "Tanpa Grafir"}
                             </div>
                           </td>
                           <td className="p-3 font-semibold">{rupiah(o.total)}</td>

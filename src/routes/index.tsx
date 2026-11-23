@@ -5,6 +5,7 @@ import {
   moments,
   rupiah,
   getStoredReviews,
+  PROMO_EXPIRY,
   type KSGReview,
 } from "@/lib/ksg-data";
 import { BpmnWorkflowView } from "@/components/BpmnWorkflowView";
@@ -29,6 +30,7 @@ import {
   Instagram,
   RotateCcw,
   Zap,
+  Clock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -363,6 +365,11 @@ export function HomePage() {
             <p className="text-xs text-muted-foreground">
               Setiap box dilengkapi mekanisme putar halus, lampu LED hangat, dan colokan charger Type-C.
             </p>
+
+            <div className="pt-2 inline-flex items-center gap-2 rounded-full bg-amber-500/15 border border-amber-500/25 px-4 py-1.5 text-xs font-semibold text-amber-900 dark:text-amber-200">
+              <Clock className="size-3.5 text-amber-600" />
+              <span>Harga promo berlaku hingga <b>{PROMO_EXPIRY}</b></span>
+            </div>
           </div>
 
           {/* 2 Main Product Cards */}

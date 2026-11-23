@@ -1,3 +1,5 @@
+export const PROMO_EXPIRY = "30 November 2026";
+
 export const colorImageMap: Record<string, string> = {
   "Frosty White Oak": "/spinning-box-dark-walnut.jpg",
   "Brown Oak": "/spinning-box-dark-walnut.jpg",
@@ -12,20 +14,25 @@ export const products = [
     titleFormatted: "Spinning Box Premium",
     badge: "Koleksi Unggulan",
     tag: "Best Seller",
-    desc: "Kotak putar foto kayu solid premium dengan mekanisme putar halus, lampu LED & charger Type-C",
+    desc: "Kotak putar foto 100% kayu pinus solid premium dengan mekanisme putar halus, lampu LED & charger Type-C",
     price: 279000,
     normalPrice: 309000,
     imageUrl: "/spinning-box-pine-premium.jpg",
     lineupUrl: "/spinning-box-lineup.jpg",
-    material: "Kayu solid premium",
+    material: "100% Kayu Pinus Solid",
     capacity: "15 foto",
     charger: "Charger Type-C",
+    leadTime: "5–8 hari pengerjaan (Tersedia Layanan Express)",
     features: [
-      "15 foto kenangan",
-      "Kayu solid premium alami",
-      "Port charger Type-C",
-      "Urutan foto bisa request",
-      "Bisa Grafir/Ukir Tulisan Sesuai Request",
+      "15 foto",
+      "Bahan: 100% Kayu Pinus Solid",
+      "Charger Type-C",
+      "Urutan foto dapat direquest",
+      "Free Photo Printing & Cutting",
+      "Lampu LED",
+      "Dapat di Grafir Tulisan (+50.000)",
+      "5–8 hari pengerjaan",
+      "Tersedia Layanan Express",
     ],
   },
   {
@@ -42,6 +49,7 @@ export const products = [
     material: "Bahan: HPL & Plywood",
     capacity: "16 foto",
     charger: "Charger Type-C",
+    leadTime: "5–8 hari pengerjaan (Tersedia Layanan Express)",
     colors: [
       {
         id: "Frosty White Oak",
@@ -75,10 +83,11 @@ export const products = [
       },
     ],
     features: [
-      "16 foto kenangan",
+      "16 foto",
       "Bahan: HPL & Plywood",
-      "Port charger Type-C",
+      "Charger Type-C",
       "Free Photo Printing & Cutting",
+      "Lampu LED",
       "5–8 hari pengerjaan",
     ],
   },
@@ -141,6 +150,10 @@ export interface KSGOrder {
   variantColor?: string;
   moment: string;
   customText: string;
+  productionSpeed?: "Normal 5–8 hari" | "Express 3–4 hari (+Rp100.000)";
+  productionSpeedCost?: number;
+  grafirOption?: "Tanpa Grafir / Polos" | "Tambah Grafir (+Rp50.000)";
+  grafirCost?: number;
   card: boolean;
   cardMsg?: string;
   total: number;
@@ -253,6 +266,10 @@ export const initialOrders: KSGOrder[] = [
     variantColor: "Frosty White Oak",
     moment: "Kenang-kenangan Sahabat",
     customText: "Friends Forever · Besties 2026",
+    productionSpeed: "Normal 5–8 hari",
+    productionSpeedCost: 0,
+    grafirOption: "Tanpa Grafir / Polos",
+    grafirCost: 0,
     card: true,
     cardMsg: "Semoga sukses di tempat baru ya sahabatku tercinta!",
     price: 229000,
@@ -268,7 +285,7 @@ export const initialOrders: KSGOrder[] = [
     sheetRow: 145,
     revisionNotes: [],
     logs: [
-      { time: "17 Nov 11:00", lane: "Pelanggan", message: "Checkout 8 foto kenangan Spinning Box Lite Frosty White Oak" },
+      { time: "17 Nov 11:00", lane: "Pelanggan", message: "Checkout 8 foto kenangan Spinning Box Lite Frosty White Oak (Normal 5–8 hari)" },
       { time: "17 Nov 11:01", lane: "Sistem Website", message: "Menunggu pembayaran QRIS Rp257.000 (Batas waktu 24 jam)" },
     ],
   },
@@ -288,12 +305,16 @@ export const initialOrders: KSGOrder[] = [
     product: "Spinning Box Premium",
     moment: "Anniversary",
     customText: "us ♡ thank you, 2025",
+    productionSpeed: "Express 3–4 hari (+Rp100.000)",
+    productionSpeedCost: 100000,
+    grafirOption: "Tambah Grafir (+Rp50.000)",
+    grafirCost: 50000,
     card: true,
     cardMsg: "Selamat hari jadi kita yang ke-3 tahun sayang!",
     price: 279000,
     ongkir: 18000,
     courier: "JNE REG",
-    total: 307000,
+    total: 457000,
     status: "Review Draft",
     date: "16 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
@@ -304,11 +325,11 @@ export const initialOrders: KSGOrder[] = [
     sheetRow: 144,
     revisionNotes: [],
     logs: [
-      { time: "16 Nov 10:15", lane: "Pelanggan", message: "Checkout pesanan 8 foto dari link bio Instagram" },
-      { time: "16 Nov 10:16", lane: "Sistem Website", message: "Kode pesanan KSG-0143 dibuat, total Rp307.000" },
-      { time: "16 Nov 10:20", lane: "Sistem Website", message: "Pembayaran QRIS Rp307.000 diverifikasi otomatis (Lunas)" },
+      { time: "16 Nov 10:15", lane: "Pelanggan", message: "Checkout pesanan 8 foto Spinning Box Premium + Layanan Express 3–4 hari & Grafir Kayu" },
+      { time: "16 Nov 10:16", lane: "Sistem Website", message: "Kode pesanan KSG-0143 dibuat, total Rp457.000" },
+      { time: "16 Nov 10:20", lane: "Sistem Website", message: "Pembayaran QRIS Rp457.000 diverifikasi otomatis (Lunas)" },
       { time: "16 Nov 10:20", lane: "Sistem Website", message: "8 Foto tersimpan di Google Drive /KSG-0143/ & baris Sheets #144 tercatat" },
-      { time: "16 Nov 11:30", lane: "Tim Grafis", message: "Draft desain v1 selesai disusun & diunggah ke sistem" },
+      { time: "16 Nov 11:30", lane: "Tim Grafis", message: "Draft mockup ukiran laser v1 selesai disusun & diunggah ke sistem" },
     ],
   },
   {
@@ -327,11 +348,15 @@ export const initialOrders: KSGOrder[] = [
     product: "Spinning Box Premium",
     moment: "Anniversary",
     customText: "Together is our favorite place",
+    productionSpeed: "Normal 5–8 hari",
+    productionSpeedCost: 0,
+    grafirOption: "Tambah Grafir (+Rp50.000)",
+    grafirCost: 50000,
     card: false,
     price: 279000,
     ongkir: 18000,
     courier: "JNE REG",
-    total: 297000,
+    total: 347000,
     status: "Revisi Diminta",
     date: "16 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
@@ -363,11 +388,15 @@ export const initialOrders: KSGOrder[] = [
     product: "Spinning Box Premium",
     moment: "Wisuda",
     customText: "Happy Graduation, S.Kom!",
+    productionSpeed: "Express 3–4 hari (+Rp100.000)",
+    productionSpeedCost: 100000,
+    grafirOption: "Tambah Grafir (+Rp50.000)",
+    grafirCost: 50000,
     card: false,
     price: 279000,
     ongkir: 18000,
     courier: "JNE REG",
-    total: 297000,
+    total: 447000,
     status: "Dikirim",
     date: "15 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
@@ -379,7 +408,7 @@ export const initialOrders: KSGOrder[] = [
     logs: [
       { time: "15 Nov 08:30", lane: "Sistem Website", message: "Pembayaran lunas terverifikasi" },
       { time: "15 Nov 11:00", lane: "Pelanggan", message: "Draft desain disetujui tanpa revisi" },
-      { time: "15 Nov 14:00", lane: "Produksi & Packing", message: "Ukir laser kayu & finishing selesai" },
+      { time: "15 Nov 14:00", lane: "Produksi & Packing", message: "Ukir laser kayu & finishing kilat Express selesai" },
       { time: "15 Nov 16:30", lane: "Produksi & Packing", message: "Packing selesai & diserahkan ke kurir JNE" },
       { time: "15 Nov 17:00", lane: "Admin & Keuangan", message: "No. resi JNE881203991 diinput ke sistem" },
     ],
@@ -401,6 +430,10 @@ export const initialOrders: KSGOrder[] = [
     variantColor: "Brown Oak",
     moment: "Ulang Tahun",
     customText: "21 Years of Blessing",
+    productionSpeed: "Normal 5–8 hari",
+    productionSpeedCost: 0,
+    grafirOption: "Tanpa Grafir / Polos",
+    grafirCost: 0,
     card: true,
     cardMsg: "Selamat ulang tahun Salsa, semoga makin sukses dan bahagia selalu!",
     price: 229000,
@@ -435,6 +468,10 @@ export const initialOrders: KSGOrder[] = [
     product: "Spinning Box Premium",
     moment: "Valentine",
     customText: "Love You to the Moon",
+    productionSpeed: "Normal 5–8 hari",
+    productionSpeedCost: 0,
+    grafirOption: "Tanpa Grafir / Polos",
+    grafirCost: 0,
     card: true,
     cardMsg: "Happy Valentine's day my dear!",
     price: 279000,
@@ -456,9 +493,9 @@ export const initialOrders: KSGOrder[] = [
   },
 ];
 
-const STORAGE_KEY = "ksg_blueprint_orders_v9";
-const REVIEWS_KEY = "ksg_store_reviews_v4";
-const AUTH_KEY = "ksg_auth_session_v4";
+const STORAGE_KEY = "ksg_blueprint_orders_v10";
+const REVIEWS_KEY = "ksg_store_reviews_v5";
+const AUTH_KEY = "ksg_auth_session_v5";
 
 export interface UserSession {
   role: "customer" | "admin";
@@ -632,6 +669,10 @@ export function createNewOrder(params: {
   variantColor?: string;
   moment: string;
   customText: string;
+  productionSpeed?: "Normal 5–8 hari" | "Express 3–4 hari (+Rp100.000)";
+  productionSpeedCost?: number;
+  grafirOption?: "Tanpa Grafir / Polos" | "Tambah Grafir (+Rp50.000)";
+  grafirCost?: number;
   card: boolean;
   cardMsg?: string;
   price: number;
@@ -644,7 +685,10 @@ export function createNewOrder(params: {
   const current = getStoredOrders();
   const nextNum = current.length + 144;
   const newId = `KSG-0${nextNum}`;
-  const total = params.price + params.ongkir + (params.card ? 10000 : 0);
+  const grafirCost = params.grafirCost || 0;
+  const speedCost = params.productionSpeedCost || 0;
+  const cardCost = params.card ? 10000 : 0;
+  const total = params.price + grafirCost + speedCost + params.ongkir + cardCost;
   const now = new Date();
   const dateStr = `${now.getDate()} Nov 2026`;
   const timeStr = `${now.getHours()}:${now.getMinutes() < 10 ? "0" : ""}${now.getMinutes()}`;
@@ -666,6 +710,10 @@ export function createNewOrder(params: {
     variantColor: params.variantColor,
     moment: params.moment,
     customText: params.customText,
+    productionSpeed: params.productionSpeed || "Normal 5–8 hari",
+    productionSpeedCost: speedCost,
+    grafirOption: params.grafirOption || "Tanpa Grafir / Polos",
+    grafirCost: grafirCost,
     card: params.card,
     cardMsg: params.cardMsg,
     price: params.price,
@@ -684,12 +732,12 @@ export function createNewOrder(params: {
       {
         time: `${dateStr} ${timeStr}`,
         lane: "Pelanggan",
-        message: "Membuat pesanan kustom 8 foto di website via IG/TikTok link",
+        message: `Membuat pesanan ${params.product} (${params.productionSpeed || "Normal 5–8 hari"}${grafirCost > 0 ? ", Tambah Grafir Laser" : ""})`,
       },
       {
         time: `${dateStr} ${timeStr}`,
         lane: "Sistem Website",
-        message: `Hitung harga Rp${params.price.toLocaleString("id-ID")} + ongkir Rp${params.ongkir.toLocaleString("id-ID")} & generate kode ${newId}`,
+        message: `Hitung produk Rp${params.price.toLocaleString("id-ID")}${speedCost > 0 ? ` + Express Rp${speedCost.toLocaleString("id-ID")}` : ""}${grafirCost > 0 ? ` + Grafir Rp${grafirCost.toLocaleString("id-ID")}` : ""} + ongkir Rp${params.ongkir.toLocaleString("id-ID")} & generate kode ${newId}`,
       },
     ],
   };

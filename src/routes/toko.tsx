@@ -6,6 +6,7 @@ import {
   couriers,
   rupiah,
   colorImageMap,
+  PROMO_EXPIRY,
   getStoredOrders,
   saveOrders,
   createNewOrder,
@@ -86,6 +87,12 @@ export function TokoPage() {
   const [selectedColor, setSelectedColor] = useState<string>("Brown Oak");
   const [selectedMoment, setSelectedMoment] = useState(moments[0]);
   const [customText, setCustomText] = useState("us ♡ thank you, 2025");
+  
+  // Waktu Pengerjaan: Normal 5-8 hari (+Rp0) / Express 3-4 hari (+Rp100.000)
+  const [productionSpeed, setProductionSpeed] = useState<"normal" | "express">("normal");
+
+  // Grafir/Ukir Tulisan di Box (Khusus Premium): Tanpa Grafir (+Rp0) / Tambah Grafir (+Rp50.000)
+  const [grafirOption, setGrafirOption] = useState<"tanpa" | "grafir">("grafir");
   
   // 8 Photos Upload State
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([
@@ -174,10 +181,13 @@ export function TokoPage() {
 
   const activeOrder = orders.find((o) => o.id === activeOrderId) || orders[0];
 
-  const subtotal = selectedProduct.price;
-  const ongkir = selectedCourier.price;
+  const isPremium = selectedProduct.id === 1;
+  const speedCost = productionSpeed === "express" ? 100000 : 0;
+  const grafirCost = isPremium && grafirOption === "grafir" ? 50000 : 0;
   const cardPrice = includeCard ? 10000 : 0;
-  const grandTotal = subtotal + ongkir + cardPrice;
+  const ongkir = selectedCourier.price;
+  const subtotal = selectedProduct.price;
+  const grandTotal = subtotal + speedCost + grafirCost + ongkir + cardPrice;
 
   // Handle Multi-Photo Upload (8 Photos)
   const handleMultiplePhotosSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -238,7 +248,13 @@ export function TokoPage() {
       product: selectedProduct.name,
       variantColor: selectedProduct.name.includes("Lite") ? selectedColor : "Pine Wood",
       moment: selectedMoment,
-      customText: customText,
+      customText: isPremium && grafirOption === "grafir" ? customText : "Tanpa Grafir / Polos",
+      productionSpeed: productionSpeed === "express" ? "Express 3–4 hari (+Rp100.000)" : "Normal 5–8 hari",
+      productionSpeedCost: speedCost,
+      grafirOption: isPremium
+        ? (grafirOption === "grafir" ? "Tambah Grafir (+Rp50.000)" : "Tanpa Grafir / Polos")
+        : "Tanpa Grafir / Polos",
+      grafirCost: grafirCost,
       card: includeCard,
       cardMsg: includeCard ? cardMsg : undefined,
       price: selectedProduct.price,
@@ -597,16 +613,34 @@ export function TokoPage() {
                 {/* STEP 0: PILIH PRODUK KATALOG */}
                 {wizardStep === 0 && (
                   <div className="space-y-6">
+                    {/* Promo Expiry Banner */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 px-4 py-3 text-xs text-amber-950 dark:text-amber-200">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex size-7 items-center justify-center rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold">
+                          <Clock className="size-4" />
+                        </span>
+                        <div>
+                          <span className="font-bold">Periode Promo Spesial:</span>{" "}
+                          <span>Harga promo berlaku hingga <b>{PROMO_EXPIRY}</b></span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="rounded-full bg-amber-500/20 px-3 py-1 text-[11px] font-bold text-amber-800 dark:text-amber-200">
+                          Diskon Langsung Rp30.000
+                        </span>
+                      </div>
+                    </div>
+
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div>
-                        <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-primary mb-2">
-                          <Sparkles className="size-3.5" /> Promo Hingga 30 November 2026
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                          Langkah 1 dari 4: Konfigurasi Produk
                         </div>
                         <h2 className="font-display text-2xl font-bold">
-                          Pilih Model Spinning Box
+                          1. Pilih Jenis Spinning Box
                         </h2>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Kotak kayu ukir putar foto kenangan dengan lampu LED warm dan colokan Type-C.
+                          Tersedia 2 varian: Spinning Box Premium (Kayu Solid) dan Spinning Box Lite (3 Pilihan Warna).
                         </p>
                       </div>
 
@@ -814,10 +848,159 @@ export function TokoPage() {
                       })}
                     </div>
 
-                    {/* Momen Selector */}
-                    <div className="pt-2">
-                      <div className="text-xs font-bold uppercase text-muted-foreground mb-2">
-                        Pilihan Momen Kado:
+                    {/* 2. PILIH WAKTU PENGERJAAN */}
+                    <div className="pt-4 border-t border-border space-y-3">
+                      <div>
+                        <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                          <Clock className="size-3.5 text-primary" />
+                          <span>2. Pilih Waktu Pengerjaan</span>
+                        </div>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          Tentukan estimasi durasi proses pengerjaan kado box kayu di workshop
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {/* 1. Normal 5-8 hari */}
+                        <div
+                          onClick={() => setProductionSpeed("normal")}
+                          className={`cursor-pointer rounded-2xl border-2 p-4 transition flex items-start justify-between ${
+                            productionSpeed === "normal"
+                              ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                              : "border-border hover:border-primary/40 bg-card"
+                          }`}
+                        >
+                          <div className="space-y-1">
+                            <div className="font-bold text-xs flex items-center gap-1.5">
+                              <span>Normal 5–8 hari</span>
+                              {productionSpeed === "normal" && (
+                                <Check className="size-3.5 text-primary" />
+                              )}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                              Pengerjaan standar teliti, cocok untuk kado yang dipersiapkan jauh hari
+                            </p>
+                          </div>
+                          <span className="text-xs font-bold text-foreground shrink-0 ml-3">
+                            Gratis (+Rp0)
+                          </span>
+                        </div>
+
+                        {/* 2. Express 3-4 hari (+Rp100.000) */}
+                        <div
+                          onClick={() => setProductionSpeed("express")}
+                          className={`cursor-pointer rounded-2xl border-2 p-4 transition flex items-start justify-between ${
+                            productionSpeed === "express"
+                              ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                              : "border-border hover:border-primary/40 bg-card"
+                          }`}
+                        >
+                          <div className="space-y-1">
+                            <div className="font-bold text-xs flex items-center gap-1.5 text-primary">
+                              <Zap className="size-3.5 fill-primary" />
+                              <span>Express 3–4 hari</span>
+                              {productionSpeed === "express" && (
+                                <Check className="size-3.5 text-primary" />
+                              )}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground leading-relaxed">
+                              Prioritas antrean workshop kilat untuk pesanan mendesak / mepet hari H
+                            </p>
+                          </div>
+                          <span className="rounded-md bg-secondary px-2 py-1 text-xs font-bold text-primary shrink-0 ml-3">
+                            +Rp100.000
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 3. GRAFIR/UKIR TULISAN DI SPINNING BOX (KHUSUS PREMIUM) */}
+                    <div className="pt-4 border-t border-border space-y-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <div className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                            <Sparkles className="size-3.5 text-primary" />
+                            <span>3. Grafir/Ukir Tulisan di Spinning Box (Khusus Premium)</span>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground mt-0.5">
+                            Ukir nama, tanggal spesial, atau ucapan di atas tutup box kayu solid
+                          </p>
+                        </div>
+                        {isPremium && (
+                          <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[10px] font-bold text-primary">
+                            100% Kayu Pinus Solid
+                          </span>
+                        )}
+                      </div>
+
+                      {isPremium ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {/* 1. Tanpa Grafir / Polos */}
+                          <div
+                            onClick={() => setGrafirOption("tanpa")}
+                            className={`cursor-pointer rounded-2xl border-2 p-4 transition flex items-start justify-between ${
+                              grafirOption === "tanpa"
+                                ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                                : "border-border hover:border-primary/40 bg-card"
+                            }`}
+                          >
+                            <div className="space-y-1">
+                              <div className="font-bold text-xs flex items-center gap-1.5">
+                                <span>Tanpa Grafir / Polos</span>
+                                {grafirOption === "tanpa" && (
+                                  <Check className="size-3.5 text-primary" />
+                                )}
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Permukaan tutup kayu tampil alami & bersih minimalis tanpa ukiran teks
+                              </p>
+                            </div>
+                            <span className="text-xs font-bold text-foreground shrink-0 ml-3">
+                              +Rp0
+                            </span>
+                          </div>
+
+                          {/* 2. Tambah Grafir (+Rp50.000) */}
+                          <div
+                            onClick={() => setGrafirOption("grafir")}
+                            className={`cursor-pointer rounded-2xl border-2 p-4 transition flex items-start justify-between ${
+                              grafirOption === "grafir"
+                                ? "border-primary bg-primary/5 ring-1 ring-primary/30 shadow-xs"
+                                : "border-border hover:border-primary/40 bg-card"
+                            }`}
+                          >
+                            <div className="space-y-1">
+                              <div className="font-bold text-xs flex items-center gap-1.5 text-primary">
+                                <Sparkles className="size-3.5 fill-primary" />
+                                <span>Tambah Grafir (+Rp50.000)</span>
+                                {grafirOption === "grafir" && (
+                                  <Check className="size-3.5 text-primary" />
+                                )}
+                              </div>
+                              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                                Ukir laser kustom teks di tutup box (dapat review draft desain sebelum dipotong)
+                              </p>
+                            </div>
+                            <span className="rounded-md bg-secondary px-2 py-1 text-xs font-bold text-primary shrink-0 ml-3">
+                              +Rp50.000
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-4 text-xs text-muted-foreground flex items-center gap-3">
+                          <AlertCircle className="size-4 text-muted-foreground shrink-0" />
+                          <div>
+                            <b>Catatan Grafir:</b> Ukir laser tulisan hanya tersedia khusus untuk <b>Spinning Box Premium</b> (100% Kayu Pinus Solid). Spinning Box Lite hadir dengan 3 corak warna permukaan kayu estetik polos minimalis.
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* 4. PILIHAN MOMEN KADO */}
+                    <div className="pt-4 border-t border-border">
+                      <div className="text-xs font-bold uppercase text-muted-foreground mb-2 flex items-center gap-1.5">
+                        <Heart className="size-3.5 text-primary" />
+                        <span>4. Pilihan Momen Kado:</span>
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {moments.map((m) => (
@@ -933,26 +1116,41 @@ export function TokoPage() {
                           </div>
                         </div>
 
-                        {/* Custom Text Engraving */}
-                        <div className="rounded-3xl border border-border bg-card p-5 space-y-3 shadow-soft">
-                          <div className="flex items-center justify-between">
-                            <label className="text-xs font-bold uppercase tracking-wider text-foreground">
-                              Teks Ukiran Grafir Laser di Tutup Box
-                            </label>
-                            <span className="text-[11px] text-muted-foreground">{customText.length}/35 Karakter</span>
+                        {/* Custom Text Engraving (Conditional on Premium + Tambah Grafir) */}
+                        {isPremium && grafirOption === "grafir" ? (
+                          <div className="rounded-3xl border border-border bg-card p-5 space-y-3 shadow-soft">
+                            <div className="flex items-center justify-between">
+                              <label className="text-xs font-bold uppercase tracking-wider text-foreground flex items-center gap-1.5">
+                                <Sparkles className="size-3.5 text-primary" />
+                                <span>Teks Ukiran Grafir Laser (+Rp50.000)</span>
+                              </label>
+                              <span className="text-[11px] text-muted-foreground">{customText.length}/35 Karakter</span>
+                            </div>
+                            <input
+                              type="text"
+                              maxLength={35}
+                              value={customText}
+                              onChange={(e) => setCustomText(e.target.value)}
+                              placeholder="Cth: us ♡ thank you, 2025"
+                              className="input text-sm"
+                            />
+                            <p className="text-[11px] text-muted-foreground">
+                              Teks akan diukir laser presisi di atas tutup kayu solid. Anda dapat me-review draft ukirannya sebelum box mulai dipotong.
+                            </p>
                           </div>
-                          <input
-                            type="text"
-                            maxLength={35}
-                            value={customText}
-                            onChange={(e) => setCustomText(e.target.value)}
-                            placeholder="Cth: us ♡ thank you, 2025"
-                            className="input text-sm"
-                          />
-                          <p className="text-[11px] text-muted-foreground">
-                            Teks akan diukir laser presisi di atas tutup kayu solid. Anda dapat me-review draft ukirannya sebelum box mulai dipotong.
-                          </p>
-                        </div>
+                        ) : (
+                          <div className="rounded-3xl border border-dashed border-border bg-muted/30 p-5 space-y-2 shadow-soft">
+                            <div className="flex items-center gap-2">
+                              <CheckCircle2 className="size-4 text-accent" />
+                              <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                                {isPremium ? "Model Box: Tanpa Grafir / Polos (+Rp0)" : "Spinning Box Lite (Estetik Polos)"}
+                              </span>
+                            </div>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                              Tutup box akan dibuat polos alami tanpa ukiran teks. Anda dapat langsung memeriksa dan mengatur 8 foto kenangan yang akan berputar di dalam box.
+                            </p>
+                          </div>
+                        )}
 
                         {/* Greeting Card with Wax Seal */}
                         <div className="rounded-3xl border border-border bg-card p-5 space-y-3 shadow-soft">
@@ -1008,11 +1206,17 @@ export function TokoPage() {
                                 {selectedMoment} · Foto #{activePreviewIndex + 1}
                               </span>
                               <div className="font-display text-xl font-bold mt-1">
-                                "{customText || "Teks Ukiran Kamu"}"
+                                {isPremium && grafirOption === "grafir"
+                                  ? `"${customText || "Teks Ukiran Kamu"}"`
+                                  : "Tanpa Grafir (Polos)"}
                               </div>
-                              <span className="text-[11px] opacity-85 mt-1">
-                                {selectedProduct.name} · {selectedProduct.material}
-                              </span>
+                              <div className="flex flex-wrap items-center gap-1.5 text-[11px] opacity-90 mt-1">
+                                <span>{selectedProduct.name}</span>
+                                <span>·</span>
+                                <span className={productionSpeed === "express" ? "text-amber-300 font-bold" : ""}>
+                                  {productionSpeed === "express" ? "⚡ Express 3–4 hari" : "Normal 5–8 hari"}
+                                </span>
+                              </div>
                             </div>
                           </div>
 
@@ -1356,17 +1560,47 @@ export function TokoPage() {
                       <span className="font-semibold">{selectedMoment}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Teks Grafir:</span>
-                      <span className="font-semibold truncate max-w-[130px]">"{customText}"</span>
+                      <span className="text-muted-foreground">Pengerjaan:</span>
+                      <span className={`font-semibold ${productionSpeed === "express" ? "text-primary" : ""}`}>
+                        {productionSpeed === "express" ? "Express 3–4 hari" : "Normal 5–8 hari"}
+                      </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Harga Promo:</span>
+                      <span className="text-muted-foreground">Opsi Grafir:</span>
+                      <span className="font-semibold">
+                        {isPremium
+                          ? grafirOption === "grafir"
+                            ? "Tambah Grafir"
+                            : "Tanpa Grafir (Polos)"
+                          : "Tanpa Grafir (Lite)"}
+                      </span>
+                    </div>
+                    {isPremium && grafirOption === "grafir" && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Teks Grafir:</span>
+                        <span className="font-semibold truncate max-w-[130px]">"{customText}"</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between pt-1 border-t border-border/60">
+                      <span className="text-muted-foreground">Harga Promo Box:</span>
                       <span className="font-semibold">{rupiah(subtotal)}</span>
                     </div>
+                    {speedCost > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Layanan Express 3–4 hari:</span>
+                        <span className="font-semibold text-primary">+{rupiah(speedCost)}</span>
+                      </div>
+                    )}
+                    {grafirCost > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Grafir Ukir Laser:</span>
+                        <span className="font-semibold text-primary">+{rupiah(grafirCost)}</span>
+                      </div>
+                    )}
                     {includeCard && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Kartu Ucapan Wax:</span>
-                        <span className="font-semibold">{rupiah(cardPrice)}</span>
+                        <span className="font-semibold">+{rupiah(cardPrice)}</span>
                       </div>
                     )}
                     <div className="flex justify-between">
@@ -1374,7 +1608,7 @@ export function TokoPage() {
                       <span className="font-semibold">{rupiah(ongkir)}</span>
                     </div>
                     <div className="flex justify-between border-t border-border pt-3 text-sm font-bold">
-                      <span>Total:</span>
+                      <span>Total Tagihan:</span>
                       <span className="font-display text-base text-primary">{rupiah(grandTotal)}</span>
                     </div>
                   </div>
@@ -1773,16 +2007,33 @@ export function TokoPage() {
                                 <div className="text-xs text-muted-foreground">
                                   Metode Bayar: <b>{o.paymentMethod || "QRIS"}</b>
                                 </div>
+                                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                                  <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                    o.productionSpeedCost && o.productionSpeedCost > 0
+                                      ? "bg-amber-500/15 text-amber-700 dark:text-amber-300"
+                                      : "bg-muted text-muted-foreground"
+                                  }`}>
+                                    {o.productionSpeed || "Normal 5–8 hari"}
+                                  </span>
+                                  <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-bold text-primary">
+                                    {o.grafirOption || (o.customText ? "Tambah Grafir" : "Tanpa Grafir")}
+                                  </span>
+                                </div>
                                 <div className="text-xs font-bold text-primary pt-0.5">
-                                  Harga: {rupiah(o.price)} + Ongkir {rupiah(o.ongkir)}
+                                  Rincian: {rupiah(o.price)}
+                                  {o.productionSpeedCost ? ` + Express ${rupiah(o.productionSpeedCost)}` : ""}
+                                  {o.grafirCost ? ` + Grafir ${rupiah(o.grafirCost)}` : ""}
+                                  {o.card ? " + Kartu Rp10.000" : ""}
+                                  {` + Ongkir ${rupiah(o.ongkir)}`}
                                 </div>
                               </div>
                             </div>
 
                             {/* Teks Grafir Tutup Box */}
                             <div className="rounded-2xl bg-muted/30 p-3.5 space-y-1 border border-border">
-                              <div className="text-[10px] font-bold uppercase text-muted-foreground">
-                                Teks Ukiran Laser di Tutup Box:
+                              <div className="flex items-center justify-between text-[10px] font-bold uppercase text-muted-foreground">
+                                <span>Teks Ukiran Laser di Tutup Box:</span>
+                                <span>{o.grafirOption || "Grafir Kayu"}</span>
                               </div>
                               <div className="font-display text-sm font-bold text-primary">
                                 "{o.customText}"
