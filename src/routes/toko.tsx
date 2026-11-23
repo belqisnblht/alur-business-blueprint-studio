@@ -7,6 +7,7 @@ import {
   rupiah,
   colorImageMap,
   PROMO_EXPIRY,
+  default16Photos,
   getStoredOrders,
   saveOrders,
   createNewOrder,
@@ -94,17 +95,8 @@ export function TokoPage() {
   // Grafir/Ukir Tulisan di Box (Khusus Premium): Tanpa Grafir (+Rp0) / Tambah Grafir (+Rp50.000)
   const [grafirOption, setGrafirOption] = useState<"tanpa" | "grafir">("grafir");
   
-  // 8 Photos Upload State
-  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>([
-    "/spinning-box-pine-premium.jpg",
-    "/spinning-box-dark-walnut.jpg",
-    "/spinning-box-pine-premium.jpg",
-    "/spinning-box-dark-walnut.jpg",
-    "/spinning-box-lineup.jpg",
-    "/catalog-kayu-story.jpg",
-    "/spinning-box-pine-premium.jpg",
-    "/spinning-box-dark-walnut.jpg",
-  ]);
+  // 16 Photos Upload State
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>(default16Photos);
   const [activePreviewIndex, setActivePreviewIndex] = useState<number>(0);
   const [includeCard, setIncludeCard] = useState(true);
   const [cardMsg, setCardMsg] = useState("Selamat hari jadi kita yang ke-3 tahun sayang ❤️");
@@ -189,11 +181,11 @@ export function TokoPage() {
   const subtotal = selectedProduct.price;
   const grandTotal = subtotal + speedCost + grafirCost + ongkir + cardPrice;
 
-  // Handle Multi-Photo Upload (8 Photos)
+  // Handle Multi-Photo Upload (16 Photos)
   const handleMultiplePhotosSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
-    const readers = files.slice(0, 8).map((file) => {
+    const readers = files.slice(0, 16).map((file) => {
       return new Promise<string>((resolve) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result as string);
@@ -204,7 +196,7 @@ export function TokoPage() {
       setUploadedPhotos((prev) => {
         const next = [...prev];
         newImgs.forEach((img, idx) => {
-          if (idx < 8) next[idx] = img;
+          if (idx < 16) next[idx] = img;
         });
         return next;
       });
@@ -1022,39 +1014,39 @@ export function TokoPage() {
                   </div>
                 )}
 
-                {/* STEP 1: KUSTOMISASI TEKS & 8 FOTO */}
+                {/* STEP 1: KUSTOMISASI TEKS & 16 FOTO */}
                 {wizardStep === 1 && (
                   <div className="space-y-6">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <h2 className="font-display text-2xl font-bold">Kustomisasi Tulisan & 8 Foto</h2>
+                        <h2 className="font-display text-2xl font-bold">Kustomisasi Tulisan & 16 Foto</h2>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                          Spinning box memuat 8 foto kenangan yang akan dicetak presisi dan dirakit berputar di dalam box.
+                          Spinning box memuat 16 foto kenangan yang akan dicetak presisi dan dirakit berputar di dalam box.
                         </p>
                       </div>
                       <div className="inline-flex items-center gap-2 rounded-full bg-secondary px-3.5 py-1 text-xs font-bold text-primary">
-                        <Sparkles className="size-3.5" /> 8/8 Slot Foto Terisi
+                        <Sparkles className="size-3.5" /> 16/16 Slot Foto Terisi
                       </div>
                     </div>
 
                     <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr]">
                       <div className="space-y-6">
-                        {/* Multi-Photo 8 Slot Uploader */}
+                        {/* Multi-Photo 16 Slot Uploader */}
                         <div className="rounded-3xl border border-border bg-card p-5 space-y-4 shadow-soft">
                           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
                             <div>
                               <label className="text-xs font-bold uppercase tracking-wider text-foreground block">
-                                Unggah 8 Foto Kenangan
+                                Unggah 16 Foto Kenangan
                               </label>
                               <span className="text-[11px] text-muted-foreground">
-                                Pilih 8 foto sekaligus dari galeri atau klik per slot foto di bawah
+                                Pilih 16 foto sekaligus dari galeri atau klik per slot foto di bawah
                               </span>
                             </div>
 
-                            {/* Upload all 8 at once */}
+                            {/* Upload all 16 at once */}
                             <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-wood px-4 py-1.5 text-xs font-bold text-primary-foreground shadow-xs hover:opacity-95 transition">
                               <Upload className="size-3.5" />
-                              <span>Pilih 8 Foto Sekaligus</span>
+                              <span>Pilih 16 Foto Sekaligus</span>
                               <input
                                 type="file"
                                 multiple
@@ -1111,7 +1103,7 @@ export function TokoPage() {
                           <div className="rounded-2xl bg-muted/40 p-3 text-[11px] text-muted-foreground flex items-center gap-2">
                             <Sparkles className="size-4 text-amber-500 shrink-0" />
                             <span>
-                              <b>Urutan Foto:</b> Foto #1 adalah foto depan. Putar tuas box untuk melihat foto #2 hingga #8 berputar secara berurutan.
+                              <b>Urutan Foto:</b> Foto #1 adalah foto depan. Putar tuas box untuk melihat foto #2 hingga #16 berputar secara berurutan.
                             </span>
                           </div>
                         </div>
@@ -1147,7 +1139,7 @@ export function TokoPage() {
                               </span>
                             </div>
                             <p className="text-xs text-muted-foreground leading-relaxed">
-                              Tutup box akan dibuat polos alami tanpa ukiran teks. Anda dapat langsung memeriksa dan mengatur 8 foto kenangan yang akan berputar di dalam box.
+                              Tutup box akan dibuat polos alami tanpa ukiran teks. Anda dapat langsung memeriksa dan mengatur 16 foto kenangan yang akan berputar di dalam box.
                             </p>
                           </div>
                         )}
@@ -1220,16 +1212,16 @@ export function TokoPage() {
                             </div>
                           </div>
 
-                          {/* Selector Dots / Mini Buttons */}
-                          <div className="flex items-center justify-center gap-1.5 pt-1">
+                          {/* Selector Dots / Mini Buttons (16 Slots) */}
+                          <div className="grid grid-cols-8 gap-1.5 pt-1">
                             {uploadedPhotos.map((_, i) => (
                               <button
                                 key={i}
                                 type="button"
                                 onClick={() => setActivePreviewIndex(i)}
-                                className={`size-6 rounded-full text-[10px] font-bold transition ${
+                                className={`size-7 rounded-lg text-[10px] font-bold transition flex items-center justify-center ${
                                   activePreviewIndex === i
-                                    ? "bg-wood text-primary-foreground shadow-xs"
+                                    ? "bg-wood text-primary-foreground shadow-xs ring-2 ring-wood/40 font-black"
                                     : "bg-muted text-muted-foreground hover:bg-secondary"
                                 }`}
                               >
@@ -2054,21 +2046,21 @@ export function TokoPage() {
                             )}
                           </div>
 
-                          {/* Right: 8 Foto Kenangan & Alamat Spesifik Kurir */}
+                          {/* Right: 16 Foto Kenangan & Alamat Spesifik Kurir */}
                           <div className="space-y-4">
-                            {/* 8 Uploaded Photos Grid */}
+                            {/* 16 Uploaded Photos Grid */}
                             <div className="rounded-2xl border border-border bg-card p-3.5 space-y-2">
                               <div className="flex items-center justify-between">
                                 <span className="text-[11px] font-bold uppercase text-muted-foreground">
-                                  8 Foto Kenangan dalam Spinning Box:
+                                  16 Foto Kenangan dalam Spinning Box:
                                 </span>
                                 <span className="text-[10px] text-muted-foreground">
                                   Klik foto untuk perbesar
                                 </span>
                               </div>
 
-                              <div className="grid grid-cols-4 gap-2">
-                                {(o.photos && o.photos.length > 0 ? o.photos : default8Photos).map((photo, pIdx) => (
+                              <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                                {(o.photos && o.photos.length > 0 ? o.photos : default16Photos).map((photo, pIdx) => (
                                   <div
                                     key={pIdx}
                                     onClick={() => setZoomPhotoUrl(photo)}

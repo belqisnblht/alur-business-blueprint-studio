@@ -237,16 +237,26 @@ export const initialReviews: KSGReview[] = [
   },
 ];
 
-export const default8Photos = [
+export const default16Photos = [
   "/spinning-box-pine-premium.jpg",
   "/spinning-box-dark-walnut.jpg",
-  "/spinning-box-pine-premium.jpg",
-  "/spinning-box-dark-walnut.jpg",
+  "/variant-frosty-white.jpg",
+  "/variant-brown-oak.jpg",
   "/spinning-box-lineup.jpg",
+  "/variant-walnut-supreme.jpg",
+  "/variant-pine-wood.jpg",
   "/catalog-kayu-story.jpg",
   "/spinning-box-pine-premium.jpg",
   "/spinning-box-dark-walnut.jpg",
+  "/variant-frosty-white.jpg",
+  "/variant-brown-oak.jpg",
+  "/spinning-box-lineup.jpg",
+  "/variant-walnut-supreme.jpg",
+  "/spinning-box-pine-premium.jpg",
+  "/catalog-kayu-story.jpg",
 ];
+
+export const default8Photos = default16Photos; // Backward compatibility alias
 
 export const initialOrders: KSGOrder[] = [
   {
@@ -279,13 +289,13 @@ export const initialOrders: KSGOrder[] = [
     status: "Menunggu Bayar",
     date: "17 Nov 2026",
     photoUrl: "/spinning-box-dark-walnut.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     paymentMethod: "QRIS",
-    driveFolder: "/KSG-0144/8-foto-sahabat/",
+    driveFolder: "/KSG-0144/16-foto-sahabat/",
     sheetRow: 145,
     revisionNotes: [],
     logs: [
-      { time: "17 Nov 11:00", lane: "Pelanggan", message: "Checkout 8 foto kenangan Spinning Box Lite Frosty White Oak (Normal 5–8 hari)" },
+      { time: "17 Nov 11:00", lane: "Pelanggan", message: "Checkout 16 foto kenangan Spinning Box Lite Frosty White Oak (Normal 5–8 hari)" },
       { time: "17 Nov 11:01", lane: "Sistem Website", message: "Menunggu pembayaran QRIS Rp257.000 (Batas waktu 24 jam)" },
     ],
   },
@@ -318,17 +328,17 @@ export const initialOrders: KSGOrder[] = [
     status: "Review Draft",
     date: "16 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     draftUrl: "/spinning-box-pine-premium.jpg",
     paymentMethod: "QRIS",
-    driveFolder: "/KSG-0143/8-foto-keisya-lanika/",
+    driveFolder: "/KSG-0143/16-foto-keisya-lanika/",
     sheetRow: 144,
     revisionNotes: [],
     logs: [
-      { time: "16 Nov 10:15", lane: "Pelanggan", message: "Checkout pesanan 8 foto Spinning Box Premium + Layanan Express 3–4 hari & Grafir Kayu" },
+      { time: "16 Nov 10:15", lane: "Pelanggan", message: "Checkout pesanan 16 foto Spinning Box Premium + Layanan Express 3–4 hari & Grafir Kayu" },
       { time: "16 Nov 10:16", lane: "Sistem Website", message: "Kode pesanan KSG-0143 dibuat, total Rp457.000" },
       { time: "16 Nov 10:20", lane: "Sistem Website", message: "Pembayaran QRIS Rp457.000 diverifikasi otomatis (Lunas)" },
-      { time: "16 Nov 10:20", lane: "Sistem Website", message: "8 Foto tersimpan di Google Drive /KSG-0143/ & baris Sheets #144 tercatat" },
+      { time: "16 Nov 10:20", lane: "Sistem Website", message: "16 Foto tersimpan di Google Drive /KSG-0143/ & baris Sheets #144 tercatat" },
       { time: "16 Nov 11:30", lane: "Tim Grafis", message: "Draft mockup ukiran laser v1 selesai disusun & diunggah ke sistem" },
     ],
   },
@@ -360,10 +370,10 @@ export const initialOrders: KSGOrder[] = [
     status: "Revisi Diminta",
     date: "16 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     draftUrl: "/spinning-box-pine-premium.jpg",
     paymentMethod: "Virtual Account BCA",
-    driveFolder: "/KSG-0142/8-foto-keisya-anniv/",
+    driveFolder: "/KSG-0142/16-foto-keisya-anniv/",
     sheetRow: 143,
     revisionNotes: ["Mohon ukuran font nama kami diperbesar 15% dan posisi digeser sedikit ke tengah."],
     logs: [
@@ -400,10 +410,10 @@ export const initialOrders: KSGOrder[] = [
     status: "Dikirim",
     date: "15 Nov 2026",
     photoUrl: "/spinning-box-pine-premium.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     resi: "JNE881203991",
     paymentMethod: "QRIS",
-    driveFolder: "/KSG-0141/8-foto-keisya-wisuda/",
+    driveFolder: "/KSG-0141/16-foto-keisya-wisuda/",
     sheetRow: 142,
     logs: [
       { time: "15 Nov 08:30", lane: "Sistem Website", message: "Pembayaran lunas terverifikasi" },
@@ -443,9 +453,9 @@ export const initialOrders: KSGOrder[] = [
     status: "Produksi",
     date: "15 Nov 2026",
     photoUrl: "/spinning-box-dark-walnut.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     paymentMethod: "Virtual Account Mandiri",
-    driveFolder: "/KSG-0140/8-foto-keisya-ultah/",
+    driveFolder: "/KSG-0140/16-foto-keisya-ultah/",
     sheetRow: 141,
     logs: [
       { time: "15 Nov 10:00", lane: "Pelanggan", message: "Draft desain disetujui" },
@@ -482,20 +492,20 @@ export const initialOrders: KSGOrder[] = [
     date: "13 Nov 2026",
     resi: "JNE880991122",
     photoUrl: "/spinning-box-pine-premium.jpg",
-    photos: default8Photos,
+    photos: default16Photos,
     paymentMethod: "QRIS",
-    driveFolder: "/KSG-0136/8-foto-keisya-val/",
+    driveFolder: "/KSG-0136/16-foto-keisya-val/",
     sheetRow: 137,
     hasReviewed: true,
     logs: [
-      { time: "13 Nov 10:00", lane: "Pelanggan", message: "Paket kado 8 foto diterima dengan selamat di alamat tujuan" },
+      { time: "13 Nov 10:00", lane: "Pelanggan", message: "Paket kado 16 foto diterima dengan selamat di alamat tujuan" },
     ],
   },
 ];
 
-const STORAGE_KEY = "ksg_blueprint_orders_v10";
-const REVIEWS_KEY = "ksg_store_reviews_v5";
-const AUTH_KEY = "ksg_auth_session_v5";
+const STORAGE_KEY = "ksg_blueprint_orders_v11";
+const REVIEWS_KEY = "ksg_store_reviews_v6";
+const AUTH_KEY = "ksg_auth_session_v6";
 
 export interface UserSession {
   role: "customer" | "admin";
@@ -723,9 +733,9 @@ export function createNewOrder(params: {
     status: "Menunggu Bayar",
     date: dateStr,
     photoUrl: params.photoUrl,
-    photos: params.photos || (params.photoUrl ? [params.photoUrl] : default8Photos),
+    photos: params.photos || (params.photoUrl ? [params.photoUrl] : default16Photos),
     paymentMethod: params.paymentMethod,
-    driveFolder: `/${newId}/8-foto-upload/`,
+    driveFolder: `/${newId}/16-foto-upload/`,
     sheetRow: nextNum,
     revisionNotes: [],
     logs: [

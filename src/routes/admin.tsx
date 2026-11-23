@@ -7,6 +7,7 @@ import {
   resetDefaultData,
   rupiah,
   statuses,
+  default16Photos,
   getCurrentUser,
   logoutUser,
   type Status,
@@ -870,6 +871,31 @@ export function AdminPage() {
                   alt="Pesanan"
                   className="aspect-video w-full object-cover"
                 />
+              </div>
+
+              {/* 16 Customer Photos Gallery */}
+              <div className="rounded-2xl border border-border p-3.5 space-y-2 bg-muted/20">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-bold uppercase text-muted-foreground">
+                    16 Foto Kenangan Pesanan:
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">
+                    {(selectedOrder.photos || default16Photos).length} foto terunggah
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
+                  {(selectedOrder.photos || default16Photos).map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="relative aspect-square rounded-lg overflow-hidden border border-border bg-black group"
+                    >
+                      <img src={img} alt={`Foto #${idx + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition" />
+                      <span className="absolute top-0.5 left-0.5 bg-black/80 size-3.5 flex items-center justify-center rounded text-[7px] text-white font-bold">
+                        {idx + 1}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Order Info */}
